@@ -1,5 +1,3 @@
-
-
 #include "helpers.h"
 
 //reading and parsing input from file, storing the operation, operand1, and operand2 into designated arrays while also keeping track of the number of lines //in the file (value being returned)
