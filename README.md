@@ -1,1 +1,26 @@
-# cs219-programming-p1
+# Machine Learning Simulator - Project 1
+## Program Description 
+This project is a **machine learning simulator** that can perform simple arithmetic operations. However, currently only supporting the ADD (addition) operation. It reads from an input file (*programming-project-1.txt*) and performs the specified operation on the given hexadecimal operands (operand1, operand2). Displaying the requested operation, given operands, and result of the operation to the terminal. Additionally, this program currently is able to detect and report if there was an unsigned overflow in the process of the operation, also reporting back to the terminal. While this program only supports the ADD operation at the moment, groundwork has been laid for future extensions to support other operations (ex. SUB, subtraction). 
+
+## How to Compile the Program 
+In order to compile the program, first make sure that the makefile and source files (main.cpp, helpers.cpp, helpers.h) are all in the same directory. Then run the **make** command in your terminal. This command will compile and create an executable named **proj1**. After successfull compilation you can run the program using **./proj1** where the requested operations will be presented in the terminal. 
+
+## Code's Working Process 
+- **Read and Parse Input:** First, the program needs to read and parse the input given from the *programming-project-1.txt* file. To do so we check if the requested file is present in the directory and attempt to open the file from there. If there is no file, the program returns 1 to demonstrate an error. If there is no error returned, then the **readData** function is called. In **readData**, the file is parsed and split into operation, operand1, and operand2 then each stored respectively into their own arrays. The function then returns the number of lines in the file to be used in performing operations and loops later on.
+- **Performing Operations:** Following, we then need to run the specified operation on the given operands. To do so, this program calls **runOperations** which determines which operation will be carried out checking the string stored in the operations array (looping through the entire array using the integer value returned from **readData**). In the case of this project, at the moment only the ADD operation has implementation, but runOperations is capable of potentially checking for future extensions! 
+  - **ADD:** To perform the ADD operation, we add operand1 to operand2 at the same index (since these values are all stored in their respective arrays). Then incase future use calls for it, store the result of the operation into a seperate array called results. We then at that index also check if an unsigned overflow has occured by calling the **detectOverflow** function, passing through the operand1 and operand2 at the same index.
+- **Detecting an Overflow:** After the **detectOverflow** function is called and the two operands have been passed through the function we perform the addition operation once more. Then check if the result of that operation is less than operand1 or operand2. Since, with unsigned addition, the result of the operation should never be less than one of the given operands! If there is an overflow detected, the function returns true, false otherwise.
+- **Displaying to Terminal:** After the result of the operation has been stored, and it has been determined whether or not there is an unsigned overflow the terminal displays to the user the operation, operands, and results of the operation. As well as if an overflow has been detected or not! Displaying these results takes place in the **runOperation** function, in order to keep main as concise as possible!
+
+## Result 
+The ouput for the given operations in the *programming-project-1.txt* file are all correct, unsigned overflow is detected when expected! 
+
+**First Operation (ADD 0x1 0x1):** When adding the hexadecimal operands 0x1 and 0x1 the result of the addition operation is 0x2. In this case there is no *unsigned* overflow since there was no carry in the most significant bit (MSB). Result was larger than the operands.
+
+**Second Operation (ADD 0xAAA5555 0x555AAAA):** When adding the hexadecimal operands 0xAAA5555 and 0x555AAAA the result of the addition operation is 0xFFFFFFF. In this case, there is no unsigned overflow since there was no carry in the MSB. Result was larger than the operands. 
+
+**Third Operation (ADD 0xFFFFFFFF 0x1):** When adding the hexadecimal operands 0xFFFFFFFF and 0x1 the result of the addition operation is 0x0. In this case, there is an unsigned overflow since there was a carry in the MSB. Referencing the functionality of the detectOverflow function, the result of the operation was less than (in this case) both of the operands, which tells us that there was an unsigned overflow as the result should never be less than either operand.
+
+**Fourth Operation (ADD 0x1234 0x8765):** When adding the hexadecimal operands 0x1234 and 0x8765 the result of the addition operation is 0x9999. In this case, there was no unsigned overflow since there was no carry in the MSB. Result was larger than the operands. 
+
+**Fifth Operation (ADD 0x72DF9901 0x2E0B484A):** When adding the hexadecimal operands 0x72DF9901 and 0x2E0B484A the result of the addition operation is 0xA0EAE14B. In this case, there was no unsigned overflow since there was no carry in the MSB. Result was larger than the operands. 
